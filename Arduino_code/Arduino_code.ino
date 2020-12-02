@@ -133,37 +133,52 @@ unsigned long getUnixTime() {
 }
 
 String getDateTime() {  //return Date and Time
-  String dt = (String)year() + "-";
+  String date = (String)year() + "-";
   byte M = month();
+
+  //如果M < 10, 則在其前面加上一個'0'
   if (M < 10) {
-    dt.concat('0');
+    date.concat('0');
   }
-  dt.concat(M);
-  dt.concat('-');
+  
+  date.concat(M);
+  date.concat('-');
   byte d = day();
+
+  //如果d < 10, 則在其前面加上一個'0'
   if (d < 10) {
-    dt.concat('0');
+    date.concat('0');
   }
-  dt.concat(d);
-  dt.concat(' ');
+  
+  date.concat(d);
+  date.concat(' ');
   byte h = hour();
+
+  //如果h < 10, 則在其前面加上一個'0'
   if (h < 10) {
-    dt.concat('0');
+    date.concat('0');
   }
-  dt.concat(h);
-  dt.concat(':');
+  
+  date.concat(h);
+  date.concat(':');
   byte m = minute();
+
+  //如果m < 10, 則在其前面加上一個'0'
   if (m < 10) {
-    dt.concat('0');
+    date.concat('0');
   }
-  dt.concat(m);
-  dt.concat(':');
+  
+  date.concat(m);
+  date.concat(':');
   byte s = second();
+
+  //如果s < 10, 則在其前面加上一個'0'
   if (s < 10) {
-    dt.concat('0');
+    date.concat('0');
   }
-  dt.concat(s);
-  return dt;  //傳回格式如 2016-07-16 16:09:23 的日期時間字串
+  
+  date.concat(s);
+  return date;  //傳回格式如 2016-07-16 16:09:23 的日期時間字串
 }
 
 void sync_clock() {
