@@ -1,3 +1,5 @@
+#include <TimeAlarms.h>
+#include <TimeLib.h>
 #include "WiFiEsp.h"
 #include "WiFiEspUdp.h"
 
@@ -30,15 +32,17 @@ void setup()
   Serial1.begin(9600);
   
   InitWiFi();
-  
   Udp.begin(localPort);
+
+  sync_clock();
+  Alarm.timerRepeat(60, sync_clock);
 }
 
 void loop()
 {
-  printDateTime(getUnixTime());
-  // wait ten seconds before asking for the time again
-  delay(10000);
+  Serial.println(getDateTime());
+  // print the time per second
+  Alarm.delay(1000);
 }
 
 // send an NTP request to the time server at the given address
@@ -121,29 +125,48 @@ unsigned long getUnixTime() {
     // now convert NTP time into everyday time:
     // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
     const unsigned long seventyYears = 2208988800UL;
-    //Taiwan time different in seconds, that's 28800:
-    const long taiwanTimeDifferent = 28800L;
     // subtract seventy years and time different:
-    unsigned long epoch = secsSince1900 - seventyYears + taiwanTimeDifferent;
+    unsigned long epoch = secsSince1900 - seventyYears;
     // return Unix time:
     return epoch;
   }
 }
 
-void printDateTime(unsigned long epoch) {
-  // print the hour, minute and second:
-  Serial.print("The Taiwan time is ");
-  Serial.print(((epoch  % 86400L) / 3600)); // print the hour (86400 equals secs per day)
-  Serial.print(':');
-  if (((epoch % 3600) / 60) < 10) {
-    // In the first 10 minutes of each hour, we'll want a leading '0'
-    Serial.print('0');
+String getDateTime() {  //return Date and Time
+  String dt = (String)year() + "-";
+  byte M = month();
+  if (M < 10) {
+    dt.concat('0');
   }
-  Serial.print((epoch  % 3600) / 60); // print the minute (3600 equals secs per minute)
-  Serial.print(':');
-  if ((epoch % 60) < 10) {
-    // In the first 10 seconds of each minute, we'll want a leading '0'
-    Serial.print('0');
+  dt.concat(M);
+  dt.concat('-');
+  byte d = day();
+  if (d < 10) {
+    dt.concat('0');
   }
-  Serial.println(epoch % 60); // print the second
+  dt.concat(d);
+  dt.concat(' ');
+  byte h = hour();
+  if (h < 10) {
+    dt.concat('0');
+  }
+  dt.concat(h);
+  dt.concat(':');
+  byte m = minute();
+  if (m < 10) {
+    dt.concat('0');
+  }
+  dt.concat(m);
+  dt.concat(':');
+  byte s = second();
+  if (s < 10) {
+    dt.concat('0');
+  }
+  dt.concat(s);
+  return dt;  //傳回格式如 2016-07-16 16:09:23 的日期時間字串
+}
+
+void sync_clock() {
+  //Taiwan time different in seconds, that's 28800:
+  setTime(getUnixTime() + 28800L);
 }
