@@ -1,9 +1,9 @@
-#House_security_system
+# House_security_system
 
->>¾ã­Ó¨t²Î¥Harduino¡Bapp inventer¬°¥D¡A¨ä¤¤Thingspeak§@¬°·¾³q
+>> æ•´å€‹ç³»çµ±ä»¥arduinoã€app inventerç‚ºä¸»ï¼Œå…¶ä¸­Thingspeakä½œç‚ºæºé€š
 
-##Arduino Part
-###Method
+## Arduino Part
+### Method
 
 1. setup()
 	* initialize serial
@@ -19,4 +19,4 @@
 6. printDateTime(unsigned long epoch)
 	* print the Taiwan time
 	
-[°Ñ¦Ò¸ê®Æ](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
+[åƒè€ƒè³‡æ–™](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
