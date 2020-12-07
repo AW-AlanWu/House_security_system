@@ -3,14 +3,8 @@
 #include "WiFiEsp.h"
 #include "WiFiEspUdp.h"
 
-// Emulate Serial1 on pins 6/7 if not present
-#ifndef HAVE_HWSERIAL1
-#include "SoftwareSerial.h"
-SoftwareSerial Serial1(6, 7); // RX, TX
-#endif
-
-char ssid[] = "MICS_LAB";            // your network SSID (name)
-char pass[] = "nlhsmics306";        // your network password
+char ssid[] = "";            // your network SSID (name)
+char pass[] = "";        // your network password
 
 
 char timeServer[] = "time.nist.gov";  // NTP server
@@ -35,14 +29,14 @@ void setup()
   Udp.begin(localPort);
 
   sync_clock();
-  Alarm.timerRepeat(60, sync_clock);
+  Alarm.timerRepeat(30, sync_clock);
 }
 
 void loop()
 {
-  Serial.println(getDateTime());
+  Serial.println(getTime());
   // print the time per second
-  Alarm.delay(1000);
+  Alarm.delay(4000);
 }
 
 // send an NTP request to the time server at the given address
@@ -101,13 +95,16 @@ void InitWiFi() {
 }
 
 unsigned long getUnixTime() {
-  sendNTPpacket(timeServer); // send an NTP packet to a time server
+  do {  //if packet failed, then send packet again
+    sendNTPpacket(timeServer); // send an NTP packet to a time server
+    
+    // wait for a reply for UDP_TIMEOUT miliseconds
+    unsigned long startMs = millis();
+    while (!Udp.available() && (millis() - startMs) < UDP_TIMEOUT) {}
+  } while(Udp.parsePacket() != 48);
   
-  // wait for a reply for UDP_TIMEOUT miliseconds
-  unsigned long startMs = millis();
-  while (!Udp.available() && (millis() - startMs) < UDP_TIMEOUT) {}
-
   Serial.println(Udp.parsePacket());
+  
   if (Udp.parsePacket()) {
     Serial.println("packet received");
     // We've received a packet, read the data from it into the buffer
@@ -132,53 +129,18 @@ unsigned long getUnixTime() {
   }
 }
 
-String getDateTime() {  //return Date and Time
-  String date = (String)year() + "-";
-  byte M = month();
-
-  //如果M < 10, 則在其前面加上一個'0'
-  if (M < 10) {
-    date.concat('0');
-  }
+String getTime() {  //return Date and Time
+  String Time;
   
-  date.concat(M);
-  date.concat('-');
-  byte d = day();
-
-  //如果d < 10, 則在其前面加上一個'0'
-  if (d < 10) {
-    date.concat('0');
-  }
-  
-  date.concat(d);
-  date.concat(' ');
   byte h = hour();
-
-  //如果h < 10, 則在其前面加上一個'0'
-  if (h < 10) {
-    date.concat('0');
-  }
   
-  date.concat(h);
-  date.concat(':');
+  Time.concat(h);
+  Time.concat(':');
+  
   byte m = minute();
+  Time.concat(m);
 
-  //如果m < 10, 則在其前面加上一個'0'
-  if (m < 10) {
-    date.concat('0');
-  }
-  
-  date.concat(m);
-  date.concat(':');
-  byte s = second();
-
-  //如果s < 10, 則在其前面加上一個'0'
-  if (s < 10) {
-    date.concat('0');
-  }
-  
-  date.concat(s);
-  return date;  //傳回格式如 2016-07-16 16:09:23 的日期時間字串
+  return Time;  //傳回格式如 16:09:23 的日期時間字串
 }
 
 void sync_clock() {

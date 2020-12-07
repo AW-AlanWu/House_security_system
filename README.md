@@ -1,6 +1,6 @@
 # House_security_system
 
->> 整個系統以arduino、app inventer為主，其中Thingspeak作為溝通
+>> 整個系統以arduino、app inventor為主，其中Thingspeak作為IOT溝通
 
 ## Arduino Part
 
@@ -16,8 +16,9 @@
 	* initialize ESP
 5.  unsigned long getUnixTime()
 	* send and recieve the UDP packet 
-6. String getDateTime(unsigned long epoch)
-	* 回傳格式如"2069-06-09 16:09:06"的字串
+	* 增加如果packet接收失敗的話則以迴圈重複發送packet的功能
+6. String getTime(unsigned long epoch)
+	* 回傳格式如"16:9"的字串(為了配合APP inventor而改變了時間格式)
 7. void sync_clock()
 	* sync the clock
 	* turn UTC time to taiwan time
@@ -52,5 +53,5 @@
 ![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/screen2_code.PNG)
 
 * 參考資料
->> [UdpNTPClient Examle](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
+>> [UdpNTPClient Example](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
 >> [利用 NTP 伺服器來同步 Arduino 系統時鐘](https://yhhuang1966.blogspot.com/2016/08/ntp-arduino.html?fbclid=IwAR2rHr-UXKwTk_lbIR3KPbFoBjla3ZaixcyNbTWjQ5ldJEWcKkSAZlSY7DI "Title")
