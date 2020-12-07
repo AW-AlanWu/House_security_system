@@ -28,6 +28,29 @@
 2. [TimeAlarms](https://github.com/PaulStoffregen/TimeAlarms "Title")
 3. [WiFiEsp](https://github.com/bportaluri/WiFiEsp "Title")
 
+## APP Inventor Part
+
+### Appreance
+
+#### Screen1:
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen1_apprence.PNG)
+
+#### Screen2:
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen2_apprence.PNG)
+
+### Code
+
+#### Screen1:
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/screen1_code.PNG)
+
+
+#### Screen2:
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/screen2_code.PNG)
+
 * 參考資料
 >> [UdpNTPClient Examle](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
 >> [利用 NTP 伺服器來同步 Arduino 系統時鐘](https://yhhuang1966.blogspot.com/2016/08/ntp-arduino.html?fbclid=IwAR2rHr-UXKwTk_lbIR3KPbFoBjla3ZaixcyNbTWjQ5ldJEWcKkSAZlSY7DI "Title")
