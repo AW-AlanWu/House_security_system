@@ -8,8 +8,14 @@
 
 1. void setup()
 	* initialize serial
+	* initialize time
+	* initialize UDP
+	* initialize ThingSpeak
+	* initialize Anything!XD
 2. void loop()
-	* just a loop XD
+	* show the time
+	* show the data from ThingSpeak
+	* and... just a loop XD
 3. void sendNTPpacket(char *ntpSrv)
 	* send the UDP packet to the NTP sever
 4. void InitWiFi()
@@ -22,12 +28,18 @@
 7. void sync_clock()
 	* sync the clock
 	* turn UTC time to taiwan time
+8. bool checkStatusCode(int statusCode)
+	* check statuscode
+9. String readThingSpeakData(unsigned long ChannelNumber, unsigned int FieldNumber, const char* ReadAPIKey)
+	* 處理所有有關"讀取"ThingSpeak資料庫的工作，簡而言之--就是讀取Channel
+	* 關於參數部分有點尷尬，由於想要將"讀取"的工作完全獨立出來，所以不打算直接使用全域變數，之後可能會再修正
 	
 ### Library
 
 1. [TimeLib](https://github.com/PaulStoffregen/Time "Title")
 2. [TimeAlarms](https://github.com/PaulStoffregen/TimeAlarms "Title")
 3. [WiFiEsp](https://github.com/bportaluri/WiFiEsp "Title")
+4. [Thingspeak](https://github.com/mathworks/thingspeak-arduino "Title")
 
 ## APP Inventor Part
 

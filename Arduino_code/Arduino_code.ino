@@ -1,3 +1,4 @@
+#include <ThingSpeak.h>
 #include <TimeAlarms.h>
 #include <TimeLib.h>
 #include "WiFiEsp.h"
@@ -5,7 +6,6 @@
 
 char ssid[] = "";            // your network SSID (name)
 char pass[] = "";        // your network password
-
 
 char timeServer[] = "time.nist.gov";  // NTP server
 unsigned int localPort = 2390;        // local port to listen for UDP packets
@@ -17,6 +17,13 @@ byte packetBuffer[NTP_PACKET_SIZE]; // buffer to hold incoming and outgoing pack
 
 // A UDP instance to let us send and receive packets over UDP
 WiFiEspUDP Udp;
+
+WiFiEspClient client;
+
+unsigned long ChannelNumber = 0;
+unsigned int startTimeFieldNumber = 1;
+unsigned int stopTimeFieldNumber = 2;
+const char * myReadAPIKey = "0";
 
 void setup()
 {
@@ -30,10 +37,17 @@ void setup()
 
   sync_clock();
   Alarm.timerRepeat(30, sync_clock);
+
+  ThingSpeak.begin(client);
 }
 
 void loop()
 {
+  Serial.println("StartTime: ");
+  Serial.println(readThingSpeakData(ChannelNumber, startTimeFieldNumber, myReadAPIKey));
+  Serial.println("StopTime: ");
+  Serial.println(readThingSpeakData(ChannelNumber, stopTimeFieldNumber, myReadAPIKey));
+  
   Serial.println(getTime());
   // print the time per second
   Alarm.delay(4000);
@@ -146,4 +160,25 @@ String getTime() {  //return Date and Time
 void sync_clock() {
   //Taiwan time different in seconds, that's 28800:
   setTime(getUnixTime() + 28800L);
+}
+
+bool checkStatusCode(int statusCode) {
+  if(statusCode == 200) {
+    return true;
+  } else {
+    Serial.println("Problem reading channel. HTTP error code " +
+                   String(statusCode));
+    return false;
+  }
+}
+
+String readThingSpeakData(unsigned long ChannelNumber, unsigned int FieldNumber, const char* ReadAPIKey) {
+  int statusCode = 0;
+  do {
+    String data = ThingSpeak.readStringField(ChannelNumber, FieldNumber, ReadAPIKey);
+    statusCode = ThingSpeak.getLastReadStatus();
+  
+    if (checkStatusCode(statusCode))
+      return data;
+  } while(!(checkStatusCode(statusCode)));
 }
