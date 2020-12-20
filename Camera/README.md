@@ -20,7 +20,7 @@
 10K歐姆-棕黑黑紅.
 4.7K歐姆-黃紫黑棕.
 
-![alt text](https://github.com/AW-AlanWu/House_security_system/Camera/wire.PNG)
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Camera/wire.png)
 
 >>目前因技術問題無法採以上順序處理XD
 
@@ -32,7 +32,11 @@
 	
 * 參考資料
 >> [OV7670 DataSheet](http://web.mit.edu/6.111/www/f2016/tools/OV7670_2006.pdf "Title")
+
 >> [camera_module OV7670 fourm](https://forum.arduino.cc/index.php?topic=535819.0 "Title")
+
 >> [How to Use OV7670 Camera Module with Arduino​](https://circuitdigest.com/microcontroller-projects/how-to-use-ov7670-camera-module-with-arduino "Title")
+
 >> [python實現的udp協議Server和Client程式碼例項](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/374245/ "Title")
+
 >> [Simple python udp server](https://gist.github.com/majek/1763628 "Title")
