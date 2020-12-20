@@ -13,7 +13,7 @@
 	* initialize ThingSpeak
 	* initialize Anything!XD
 2. void loop()
-	* show the time
+	* 比較當前系統時間與ThingSpeak上時鐘的時間是否相同，如果相同則進入迴圈(之後可能加入拍照功能)
 	* show the data from ThingSpeak
 	* and... just a loop XD
 3. void sendNTPpacket(char *ntpSrv)

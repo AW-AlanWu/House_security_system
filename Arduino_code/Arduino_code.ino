@@ -23,7 +23,7 @@ WiFiEspClient client;
 unsigned long ChannelNumber = 0;
 unsigned int startTimeFieldNumber = 1;
 unsigned int stopTimeFieldNumber = 2;
-const char * myReadAPIKey = "0";
+const char * myReadAPIKey = "";
 
 void setup()
 {
@@ -36,21 +36,21 @@ void setup()
   Udp.begin(localPort);
 
   sync_clock();
-  Alarm.timerRepeat(30, sync_clock);
+  Alarm.timerRepeat(60, sync_clock);
 
   ThingSpeak.begin(client);
 }
 
 void loop()
 {
-  Serial.println("StartTime: ");
-  Serial.println(readThingSpeakData(ChannelNumber, startTimeFieldNumber, myReadAPIKey));
-  Serial.println("StopTime: ");
-  Serial.println(readThingSpeakData(ChannelNumber, stopTimeFieldNumber, myReadAPIKey));
-  
-  Serial.println(getTime());
-  // print the time per second
-  Alarm.delay(4000);
+  String startTime = readThingSpeakData(ChannelNumber, startTimeFieldNumber, myReadAPIKey);
+  String stopTime = readThingSpeakData(ChannelNumber, stopTimeFieldNumber, myReadAPIKey);
+
+  if(getTime() == startTime) {
+    while(getTime() != stopTime) {
+      
+    }
+  }
 }
 
 // send an NTP request to the time server at the given address
