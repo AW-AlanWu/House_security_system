@@ -64,6 +64,16 @@
 
 ![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/screen2_code.PNG)
 
+## Building Part
+
+### Perspective View
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Building/Perspective.PNG)
+
+### Top View
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Building/Top.PNG)
+
 * 參考資料
 
 >> [UdpNTPClient Example](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
