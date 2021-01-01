@@ -66,9 +66,13 @@
 
 ## Building Part
 
-### Perspective View
+### Perspective View(Entity):
 
-![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Building/Perspective.PNG)
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Building/Perspective%201.png)
+
+### Perspective View(Perspective):
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/Building/Perspective%202.png)
 
 ### Top View
 
