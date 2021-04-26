@@ -80,6 +80,8 @@
 
 ## ESP32-CAM part
 
+>> 當前功能：拍照、取得目前時間(與真實時間不符合)、將訊息及照片發送至LINE Notify
+
 ### Method
 
 
@@ -88,3 +90,9 @@
 >> [UdpNTPClient Example](https://github.com/bportaluri/WiFiEsp/blob/master/examples/UdpNTPClient/UdpNTPClient.ino "Title")
 
 >> [利用 NTP 伺服器來同步 Arduino 系統時鐘](https://yhhuang1966.blogspot.com/2016/08/ntp-arduino.html?fbclid=IwAR2rHr-UXKwTk_lbIR3KPbFoBjla3ZaixcyNbTWjQ5ldJEWcKkSAZlSY7DI "Title")
+
+>> [02 與LINE的連動](https://sites.google.com/site/wenyuwebbit/22-esp32-cam/02-yuline-de-lian-dong "Title")
+
+>> [01 認識ESP32-CAM](https://sites.google.com/site/wenyuwebbit/22-esp32-cam/01-ren-shiesp32-cam "Title")
+
+>> [USB TTL driver](http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=225&pcid=41 "Title")

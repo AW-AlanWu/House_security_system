@@ -1,23 +1,24 @@
+// Santi&be  Youtube
+// https://www.youtube.com/watch?v=I-HbdRWwMVY
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
-#include <WiFiClientSecure.h>
-#include "soc/soc.h"
-#include "soc/rtc_cntl_reg.h"
 #include "esp_camera.h"
+#include "esp_system.h"
 #include <TimeAlarms.h>
 #include <TimeLib.h>
 
-char timeServer[] = "time.nist.gov";  // NTP server
-unsigned int localPort = 2390;        // local port to listen for UDP packets
+hw_timer_t *timer = NULL;
+void IRAM_ATTR resetModule(){
+    ets_printf("reboot\n");
+    esp_restart();
+}
+#include <TridentTD_LineNotify.h>
+#define SSID        "MICS_LAB"   //WiFi name
+#define PASSWORD    "nlhsmics306"   //PASSWORD
+#define LINE_TOKEN  "zqOlxdPlSp95ymYvCuNF7BCX7hczaTUmxjogUD5m3BR"   
 
-const int NTP_PACKET_SIZE = 48;  // NTP timestamp is in the first 48 bytes of the message
-const int UDP_TIMEOUT = 2000;    // timeout in miliseconds to wait for an UDP packet to arrive
-
-byte packetBuffer[NTP_PACKET_SIZE]; // buffer to hold incoming and outgoing packets
-
-WiFiUDP Udp;
-
-//CAMERA_MODEL_AI_THINKER
+// Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
 #define RESET_GPIO_NUM    -1
 #define XCLK_GPIO_NUM      0
@@ -36,56 +37,26 @@ WiFiUDP Udp;
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-void InitWiFi() {
-  WiFi.mode(WIFI_STA);
+char timeServer[] = "time.nist.gov";  // NTP server
+unsigned int localPort = 2390;        // local port to listen for UDP packets
 
-  Serial.println("");
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);  
-  
-  long int StartTime=millis();
-  while (WiFi.status() != WL_CONNECTED) 
-  {
-    delay(500);
-    Serial.print(".");
-    if ((StartTime+10000) < millis()) break;
-  } 
+const int NTP_PACKET_SIZE = 48;  // NTP timestamp is in the first 48 bytes of the message
+const int UDP_TIMEOUT = 2000;    // timeout in miliseconds to wait for an UDP packet to arrive
 
-  Serial.println("");
-  Serial.println("STAIP address: ");
-  Serial.println(WiFi.localIP());
-    
-  Serial.println("");
+byte packetBuffer[NTP_PACKET_SIZE]; // buffer to hold incoming and outgoing packets
 
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Reset");
-    
-    ledcAttachPin(4, 3);
-    ledcSetup(3, 5000, 8);
-    ledcWrite(3,10);
-    delay(200);
-    ledcWrite(3,0);
-    delay(200);    
-    ledcDetachPin(3);
-        
-    delay(1000);
-    ESP.restart();  //�Y���s�WWi-Fi�{�O�⦸�᭫��
-  }
-  else {
-    ledcAttachPin(4, 3);
-    ledcSetup(3, 5000, 8);
-    for (int i=0;i<5;i++) {  //�Y�s�WWi-Fi�{�O����
-      ledcWrite(3,10);
-      delay(200);
-      ledcWrite(3,0);
-      delay(200);    
-    }
-    ledcDetachPin(3);      
-  }
-}
+WiFiUDP Udp;
 
-void InitCamera() {
+const int Led_Flash = 4;
+const int Led_run = 13;
+int Switch = 12;
+
+const long taiwanTimeDifferent = 28800L;
+//boolean startTimer = false;
+//unsigned long time_now=0;
+//int time_capture=0;
+
+void initCamera() {
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -106,30 +77,55 @@ void InitCamera() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_JPEG;
+  config.pixel_format = PIXFORMAT_JPEG; 
   
   if(psramFound()){
-    config.frame_size = FRAMESIZE_UXGA;
-    config.jpeg_quality = 10;  //0-63 lower number means higher quality
+// FRAMESIZE_ +
+//QQVGA/160x120//QQVGA2/128x160//QCIF/176x144//HQVGA/240x176
+//QVGA/320x240//CIF/400x296//VGA/640x480//SVGA/800x600//XGA/1024x768
+//SXGA/1280x1024//UXGA/1600x1200//QXGA/2048*1536
+    config.frame_size = FRAMESIZE_XGA; 
+    config.jpeg_quality = 10;
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_SVGA;
-    config.jpeg_quality = 12;  //0-63 lower number means higher quality
+    config.frame_size = FRAMESIZE_QQVGA;
+    config.jpeg_quality = 12;
     config.fb_count = 1;
   }
   
-  // camera init
+  // Init Camera
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
     Serial.printf("Camera init failed with error 0x%x", err);
-    delay(1000);
-    ESP.restart();
+    return;
   }
+}
 
-  //drop down frame size for higher initial frame rate
-  sensor_t * s = esp_camera_sensor_get();
-  //�i�ۭq�ѪR��
-  s->set_framesize(s, FRAMESIZE_VGA);  // XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA
+void Send_line(uint8_t *image_data,size_t   image_size){
+   LINE.notifyPicture("Oh..shit",image_data, image_size);
+}
+
+void Camera_capture() {
+  digitalWrite(Led_Flash, HIGH);
+  delay(100); 
+  digitalWrite(Led_Flash, LOW);
+  delay(100);
+  digitalWrite(Led_Flash, HIGH);
+  camera_fb_t * fb = NULL;
+  delay(200); 
+  // Take Picture with Camera
+  fb = esp_camera_fb_get(); 
+  if(!fb) {
+    Serial.println("Camera capture failed");
+    return;
+  }
+   digitalWrite(Led_Flash, LOW);
+   Send_line(fb->buf,fb->len);
+   esp_camera_fb_return(fb); 
+  // Serial.println("Going to sleep now");
+  // esp_deep_sleep_start();
+  // Serial.println("This will never be printed");
+
 }
 
 void sendNTPpacket(char *ntpSrv)
@@ -195,6 +191,11 @@ unsigned long getUnixTime() {
 
 String getTime() {  //return Date and Time
   String Time;
+
+  byte y = year();
+
+  Time.concat(y);
+  Time.concat('.');
   
   byte h = hour();
   
@@ -209,5 +210,13 @@ String getTime() {  //return Date and Time
 
 void sync_clock() {
   //Taiwan time different in seconds, that's 28800:
-  setTime(getUnixTime() + 28800L);
+  setTime(getUnixTime() + taiwanTimeDifferent);
+}
+
+void InitWiFi() {
+  WiFi.begin(SSID, PASSWORD);
+  Serial.printf("WiFi connecting to %s\n",  SSID);
+  while(WiFi.status() != WL_CONNECTED) { Serial.print("."); delay(400); }
+  Serial.printf("\nWiFi connected\nIP : ");
+  Serial.println(WiFi.localIP());
 }
