@@ -7,15 +7,11 @@ void setup() {
   pinMode(Led_run, OUTPUT);
 
   InitWiFi();
-
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  printLocalTime();
   LINE.setToken(LINE_TOKEN);
 
-   Udp.begin(localPort);
-
-   sync_clock();
-   Alarm.timerRepeat(60, sync_clock);
-
-   initCamera();
+  initCamera();
 }
 
 void loop() {
@@ -23,8 +19,6 @@ void loop() {
            Camera_capture();
            Serial.println("OK"); 
     }
-
-    Serial.println(getTime());
-    //Serial.println(digitalRead(Switch));
-    delay(200);
+    printLocalTime();
+    delay(1000);
 }

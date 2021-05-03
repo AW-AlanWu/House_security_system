@@ -80,10 +80,35 @@
 
 ## ESP32-CAM part
 
->> 當前功能：拍照、取得目前時間(與真實時間不符合)、將訊息及照片發送至LINE Notify
+>> 當前功能：拍照、取得目前時間、將訊息及照片發送至LINE Notify
 
 ### Method
 
+1. void setup()
+	* initialize serial
+	* initialize camera
+	* initialize WiFi
+	* initialize Time
+	* initialize Anything!XD
+2. void loop()
+	* If switch is on, then take a picture and send it to line notify
+	* print the time
+3. initCamera()
+	* I don't now how it work
+	* As the name suggests
+4. Send_line(uint8_t *image_data,size_t   image_size)
+	* As the name suggests
+5. Camera_capture()
+	* I don't now how it work
+	* As the name suggests
+6. InitWiFi()
+	* As the name suggests
+7. printLocalTime()
+	* As the name suggests
+	
+### Library
+
+1. [TridentTD_LineNotify](https://github.com/TridentTD/TridentTD_LineNotify "Title")
 
 * 參考資料
 
@@ -95,4 +120,6 @@
 
 >> [01 認識ESP32-CAM](https://sites.google.com/site/wenyuwebbit/22-esp32-cam/01-ren-shiesp32-cam "Title")
 
->> [USB TTL driver](http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=225&pcid=41 "Title")
+>> [USB TTL driver(choose the old version)](http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=225&pcid=41 "Title")
+
+>> [ESP32-Cam 讀取網際網路上的時間](http://pizgchen.blogspot.com/2020/08/esp32-esp32-cam_13.html "Title")
