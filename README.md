@@ -122,4 +122,6 @@
 
 >> [USB TTL driver(choose the old version)](http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=225&pcid=41 "Title")
 
+>> [USB TTL driver(old version)](http://www.sjen.com.tw:8080/SJEN/App/UPDATE_PG/USB%E8%BD%89COM%E9%A9%85%E5%8B%95.EXE "Title")
+
 >> [ESP32-Cam 讀取網際網路上的時間](http://pizgchen.blogspot.com/2020/08/esp32-esp32-cam_13.html "Title")
