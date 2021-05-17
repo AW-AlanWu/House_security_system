@@ -47,11 +47,15 @@
 
 #### Screen1:
 
-![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen1_apprence.PNG)
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen1_apprence.jpg)
+
+#### Screen1(notifier):
+
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/screen1_apprence2.jpg)
 
 #### Screen2:
 
-![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen2_apprence.PNG)
+![alt text](https://github.com/AW-AlanWu/House_security_system/blob/master/AppInventor/Screen2_apprence.jpg)
 
 ### Code
 
