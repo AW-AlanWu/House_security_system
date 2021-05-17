@@ -6,6 +6,8 @@
 #include "esp_system.h"
 #include "time.h"
 #include <TridentTD_LineNotify.h>
+#include <WiFi.h>
+#include <FirebaseESP32.h>
 
 #define SSID        "MICS_LAB"   //WiFi name
 #define PASSWORD    "nlhsmics306"   //PASSWORD
@@ -37,6 +39,30 @@ const int   daylightOffset_sec = 3600;
 const int Led_Flash = 4;
 const int Led_run = 13;
 int Switch = 12;
+
+#include "addons/TokenHelper.h"
+
+/* 1. Define the WiFi credentials */
+#define WIFI_SSID "MICS_LAB"
+#define WIFI_PASSWORD "nlhsmics306"
+
+/* 2. Define the API Key */
+#define API_KEY "AIzaSyCb6FUrKcXm2vlo-Rd2qUmi4B4xRifbjpA"
+
+/* 3. Define the RTDB URL */
+#define DATABASE_URL "https://security-system-9a73d-default-rtdb.firebaseio.com/" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+
+/* 4. Define the user Email and password that alreadey registerd or added in your project */
+#define DATABASE_SECRET "kp6ASeT23IWKSJt6pnKIhgNNO839oQ6LUGvtNTVM"
+
+/* 5. Define FirebaseESP8266 data object for data sending and receiving */
+FirebaseData fbdo;
+
+/* 6. Define the FirebaseAuth data for authentication data */
+FirebaseAuth auth;
+
+/* 7. Define the FirebaseConfig data for config data */
+FirebaseConfig config;
 
 void initCamera() {
   camera_config_t config;
@@ -116,6 +142,22 @@ void InitWiFi() {
   while(WiFi.status() != WL_CONNECTED) { Serial.print("."); delay(400); }
   Serial.printf("\nWiFi connected\nIP : ");
   Serial.println(WiFi.localIP());
+}
+
+void InitFirebase() {
+  config.api_key = API_KEY;
+
+  /* 10. Assign the RTDB URL (required) */
+  config.database_url = DATABASE_URL;
+
+  /* 11. Assign the callback function for the long running token generation task */
+  config.token_status_callback = tokenStatusCallback; //see addons/TokenHelper.h
+
+  //Or use legacy authenticate method
+  Firebase.begin(DATABASE_URL, DATABASE_SECRET);
+
+  /* 13. Enable auto reconnect the WiFi when connection lost */
+  Firebase.reconnectWiFi(true);
 }
 
 void printLocalTime()

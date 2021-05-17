@@ -109,6 +109,8 @@
 ### Library
 
 1. [TridentTD_LineNotify](https://github.com/TridentTD/TridentTD_LineNotify "Title")
+1. [Firebase Realtime Database Arduino Library for ESP32](https://github.com/mobizt/Firebase-ESP32 "Title")
+
 
 * 參考資料
 

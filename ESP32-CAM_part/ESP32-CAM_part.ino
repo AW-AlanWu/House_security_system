@@ -12,13 +12,39 @@ void setup() {
   LINE.setToken(LINE_TOKEN);
 
   initCamera();
+  InitFirebase();
 }
 
 void loop() {
+    if (Firebase.ready()) {
+      if (Firebase.getString(fbdo, "/Security_System_firebase/opentimehour")) {
+        //Success
+        Serial.print("Get int data success, String = ");
+        Serial.println(fbdo.stringData());
+      } else {
+        //Failed?, get the error reason from fbdo
+  
+        Serial.print("Error in getData, ");
+        Serial.println(fbdo.errorReason());
+      }
+
+      if (Firebase.getString(fbdo, "/Security_System_firebase/opentimeminute")) {
+        //Success
+        Serial.print("Get int data success, String = ");
+        Serial.println(fbdo.stringData());
+      } else {
+        //Failed?, get the error reason from fbdo
+  
+        Serial.print("Error in getData, ");
+        Serial.println(fbdo.errorReason());
+      }
+    }
+  
     if(digitalRead(Switch) == 1){    
            Camera_capture();
            Serial.println("OK"); 
     }
+    
     printLocalTime();
     delay(1000);
 }
